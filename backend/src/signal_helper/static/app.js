@@ -87,8 +87,8 @@ if (!window.isSecureContext) {
   banner.hidden = false;
   banner.classList.add("warn");
   banner.textContent =
-    "Sensors need a secure origin. On HTTP LAN, add this URL to Chrome's " +
-    "'Insecure origins treated as secure' flag on the phone.";
+    "Sensors need HTTPS. Restart the backend with " +
+    "`signal-helper cert && signal-helper serve --tls`.";
 }
 
 // ---- signal stream -------------------------------------------------

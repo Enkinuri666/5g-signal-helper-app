@@ -110,10 +110,11 @@
       </label>
 
       <p class="hint">
-        Sensors need a secure origin: <strong>https://</strong> or
-        <strong>http://localhost</strong>. When accessing over LAN HTTP,
-        add the URL to Chrome's <em>Insecure origins treated as secure</em>
-        flag on the phone, or serve the backend behind HTTPS.
+        Sensors need a secure origin — <strong>https://</strong> or
+        <strong>http://localhost</strong>. For LAN access from a phone,
+        run <code>signal-helper cert</code> then
+        <code>signal-helper serve --tls</code> on the backend, and accept
+        the "not private" warning on first visit.
       </p>
 
       <div class="row">

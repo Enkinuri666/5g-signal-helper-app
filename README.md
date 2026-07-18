@@ -34,9 +34,32 @@ signal-helper probe --mock
 export MODEM_PASSWORD='...'
 signal-helper probe
 
-# Run the API (LAN-only).
+# Run the backend + PWA. HTTP works for localhost testing.
 signal-helper serve --host 0.0.0.0 --port 8765
 ```
+
+## LAN access from a phone (HTTPS)
+
+`DeviceOrientation`, `geolocation`, and the service worker only run in
+a "secure context" — HTTPS or `localhost`. Plain-HTTP LAN access from a
+phone doesn't qualify, so the compass will show a warning banner and the
+sensor buttons will no-op.
+
+Mint a self-signed cert and re-launch with `--tls`:
+
+```bash
+# On the machine running the backend.
+signal-helper cert --san 192.168.1.50 --san modem.local   # your LAN IPs/hostnames
+signal-helper serve --tls --host 0.0.0.0 --port 8765
+```
+
+`cert` auto-includes `127.0.0.1`, `localhost`, and the outbound LAN IP;
+add any extra address the phone will actually type via `--san`. The cert
+lives at `~/.signal-helper/tls/cert.pem` (key mode 0600).
+
+On the phone, visit `https://<lan-ip>:8765`. First load will warn "your
+connection is not private" — tap **Advanced → Proceed**. From then on
+sensor APIs and installing the PWA both work.
 
 ## Layout
 
