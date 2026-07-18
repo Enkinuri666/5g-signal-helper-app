@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f14" />
+  <title>5G Alignment Compass</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot" id="statusDot" data-state="idle"></span>
+      <span>5G Alignment</span>
+    </div>
+    <button id="settingsBtn" class="icon-btn" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5Zm7.94-2.5a1 1 0 0 0 0-2l-1.65-.29a6.9 6.9 0 0 0-.66-1.6l1-1.37a1 1 0 0 0-1.41-1.41l-1.37 1a6.9 6.9 0 0 0-1.6-.66L13.94 5a1 1 0 0 0-2 0l-.29 1.65a6.9 6.9 0 0 0-1.6.66l-1.37-1A1 1 0 1 0 7.28 7.72l1 1.37a6.9 6.9 0 0 0-.66 1.6L6 11a1 1 0 0 0 0 2l1.65.29a6.9 6.9 0 0 0 .66 1.6l-1 1.37a1 1 0 1 0 1.41 1.41l1.37-1a6.9 6.9 0 0 0 1.6.66L11 19.94a1 1 0 0 0 2 0l.29-1.65a6.9 6.9 0 0 0 1.6-.66l1.37 1a1 1 0 1 0 1.41-1.41l-1-1.37a6.9 6.9 0 0 0 .66-1.6Z"/></svg>
+    </button>
+  </header>
+
+  <main class="stage">
+    <div id="banner" class="banner" hidden></div>
+
+    <div class="compass-wrap">
+      <svg id="compass" class="compass" viewBox="-100 -100 200 200" aria-label="Alignment compass">
+        <defs>
+          <radialGradient id="dialGrad" cx="0.5" cy="0.5" r="0.7">
+            <stop offset="0%" stop-color="#111a22"/>
+            <stop offset="100%" stop-color="#050810"/>
+          </radialGradient>
+          <linearGradient id="rsrpGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#4ade80"/>
+            <stop offset="60%" stop-color="#facc15"/>
+            <stop offset="100%" stop-color="#f87171"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Rotating dial: everything except the phone pointer counter-rotates with the phone heading. -->
+        <g id="dial">
+          <circle r="92" fill="url(#dialGrad)" stroke="#1e2a3b" stroke-width="1.5" />
+
+          <!-- Cardinal + degree ticks; drawn programmatically to avoid a wall of markup. -->
+          <g id="ticks"></g>
+          <g id="cardinals" class="cardinals"></g>
+
+          <!-- Target-cell bearing marker -->
+          <g id="target" transform="rotate(0)">
+            <polygon points="0,-90 -7,-72 7,-72" fill="url(#rsrpGrad)" stroke="#0b0f14" stroke-width="1" />
+            <circle cx="0" cy="-72" r="3" fill="#0b0f14" />
+          </g>
+        </g>
+
+        <!-- Fixed phone-direction pointer -->
+        <g id="phone-pointer">
+          <polygon points="0,-95 -5,-80 5,-80" fill="#e2e8f0" opacity="0.85" />
+          <circle r="4" fill="#e2e8f0" opacity="0.85" />
+        </g>
+      </svg>
+
+      <div id="deltaLabel" class="delta-label" aria-live="polite">— °</div>
+    </div>
+
+    <section class="metrics" aria-label="Modem metrics">
+      <div class="metric">
+        <span class="k">RSRP</span>
+        <span class="v" id="mRsrp">—</span>
+        <span class="u">dBm</span>
+      </div>
+      <div class="metric">
+        <span class="k">SINR</span>
+        <span class="v" id="mSinr">—</span>
+        <span class="u">dB</span>
+      </div>
+      <div class="metric">
+        <span class="k">RSRQ</span>
+        <span class="v" id="mRsrq">—</span>
+        <span class="u">dB</span>
+      </div>
+      <div class="metric wide">
+        <span class="k">Cell</span>
+        <span class="v" id="mCell">—</span>
+        <span class="u" id="mBand"></span>
+      </div>
+    </section>
+
+    <div class="sensor-actions">
+      <button id="orientPermBtn" class="pill" hidden>Enable compass sensor</button>
+      <button id="gpsPermBtn" class="pill" hidden>Enable location</button>
+    </div>
+  </main>
+
+  <dialog id="settings" class="settings">
+    <form method="dialog">
+      <h2>Settings</h2>
+
+      <label>
+        <span>Tower latitude</span>
+        <input id="towerLat" type="number" inputmode="decimal" step="any" placeholder="-33.8688" />
+      </label>
+      <label>
+        <span>Tower longitude</span>
+        <input id="towerLon" type="number" inputmode="decimal" step="any" placeholder="151.2093" />
+      </label>
+      <label>
+        <span>Tower label (optional)</span>
+        <input id="towerLabel" type="text" placeholder="e.g. Rooftop gNB" />
+      </label>
+
+      <p class="hint">
+        Sensors need a secure origin: <strong>https://</strong> or
+        <strong>http://localhost</strong>. When accessing over LAN HTTP,
+        add the URL to Chrome's <em>Insecure origins treated as secure</em>
+        flag on the phone, or serve the backend behind HTTPS.
+      </p>
+
+      <div class="row">
+        <button id="saveBtn" value="save" type="submit">Save</button>
+        <button value="cancel" type="submit" class="secondary">Close</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
