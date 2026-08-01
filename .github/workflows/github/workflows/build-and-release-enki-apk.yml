@@ -1,0 +1,116 @@
+name: Build, sign and release Enki Prompt Vault APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Optional build name'
+        required: false
+        default: ''
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    env:
+      FLUTTER_CHANNEL: stable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: stable
+
+      - name: Ensure Android SDK tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          flutter doctor -v
+
+      - name: Decode Android keystore (from secret KEYSTORE_BASE64)
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        run: |
+          mkdir -p enki_prompt_vault/android/app
+          echo "Decoding keystore into enki_prompt_vault/android/app/enki_keystore.jks"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > enki_prompt_vault/android/app/enki_keystore.jks
+
+      - name: Create android/key.properties from repo secrets
+        if: ${{ secrets.KEYSTORE_PASSWORD != '' && secrets.KEY_ALIAS != '' && secrets.KEY_PASSWORD != '' }}
+        run: |
+          mkdir -p enki_prompt_vault/android
+          cat > enki_prompt_vault/android/key.properties <<EOF
+storeFile=app/enki_keystore.jks
+storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+keyAlias=${{ secrets.KEY_ALIAS }}
+keyPassword=${{ secrets.KEY_PASSWORD }}
+EOF
+          echo "Created enki_prompt_vault/android/key.properties"
+
+      - name: Flutter pub get
+        working-directory: enki_prompt_vault
+        run: flutter pub get
+
+      - name: Build release APK
+        working-directory: enki_prompt_vault
+        run: |
+          if [ -n "${{ github.event.inputs.build_name }}" ]; then
+            BUILD_NAME="${{ github.event.inputs.build_name }}"
+          else
+            BUILD_NAME="v${{ github.run_number }}"
+          fi
+          echo "Building APK (build name: $BUILD_NAME)"
+          flutter build apk --release --build-name=$BUILD_NAME
+
+      - name: List output directory
+        run: ls -la enki_prompt_vault/build/app/outputs/flutter-apk || true
+
+      - name: Verify APK signature (apksigner)
+        if: always()
+        run: |
+          APK=$(ls enki_prompt_vault/build/app/outputs/flutter-apk/*.apk | head -n1 || true)
+          echo "APK => $APK"
+          if [ -n "$APK" ]; then
+            # ensure zipalign/apksigner available via Android SDK — try apksigner if present
+            if command -v apksigner >/dev/null 2>&1 ; then
+              apksigner verify --print-certs "$APK" || true
+            else
+              echo "apksigner not found in PATH; skipping signature print"
+            fi
+          else
+            echo "No APK found to verify"
+          fi
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enki-prompt-vault-apk
+          path: enki_prompt_vault/build/app/outputs/flutter-apk/*.apk
+
+      - name: Create GitHub Release and upload APK
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: apk-release-${{ github.run_number }}
+          name: Enki Prompt Vault APK ${{ github.run_number }}
+          body: "Signed release APK built by CI (run ${{ github.run_number }})."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK to Release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.softprops.outputs.upload_url || '' }}
+          asset_path: enki_prompt_vault/build/app/outputs/flutter-apk/*.apk
+          asset_name: enki-prompt-vault.apk
+          asset_content_type: application/vnd.android.package-archive
