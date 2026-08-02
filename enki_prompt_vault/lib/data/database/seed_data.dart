@@ -95,7 +95,9 @@ abstract final class SeedData {
       'Product Photography', 'Fantasy', 'Sci-Fi', 'Anime', 'Comics',
       'Lighting', 'Camera Settings', 'Composition', 'Character Design',
       'Environment Design', 'Style References', 'Prompt Templates',
-      'Negative Prompts', 'Prompt Optimization',
+      'Negative Prompts', 'Prompt Optimization', 'Boudoir & Glamour',
+      'Artistic Nude', 'Pin-Up', 'Mature Scenes', 'Figure Study',
+      'Power Dynamics', 'Taboo Artistic', 'I2I Techniques', 'I2V Techniques',
     ],
     'Video Generation': [
       'Cinematic Video', 'Commercials', 'Animation', 'Music Videos',
