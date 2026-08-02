@@ -84,6 +84,7 @@ abstract final class SeedData {
       'AI Benchmarks', 'AI Safety Research', 'Model Comparison',
       'Structured Outputs', 'Function Calling', 'ChatGPT', 'Claude',
       'Gemini', 'Grok', 'DeepSeek', 'Perplexity', 'Qwen', 'Llama',
+      'AI Automation', 'Agentic Systems',
     ],
     'Programming': [
       'Python', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Flutter',
@@ -91,16 +92,20 @@ abstract final class SeedData {
       'Git', 'Rust', 'Go', 'C#', 'Java', 'C++', 'PHP',
     ],
     'Image Generation': [
+      'General Image Prompts',
       'Photorealism', 'Cinematic', 'Portraits', 'Fashion', 'Architecture',
       'Product Photography', 'Fantasy', 'Sci-Fi', 'Anime', 'Comics',
       'Lighting', 'Camera Settings', 'Composition', 'Character Design',
       'Environment Design', 'Style References', 'Prompt Templates',
       'Negative Prompts', 'Prompt Optimization',
+      'Cinematic Lighting', 'Camera Lenses', 'Color Grading',
+      'Character Consistency', 'NSFW (Personal)', 'Mature Content (Personal)',
     ],
     'Video Generation': [
       'Cinematic Video', 'Commercials', 'Animation', 'Music Videos',
       'Short Films', 'Camera Motion', 'Storyboards', 'Character Consistency',
       'Video Editing', 'Prompt Templates',
+      'NSFW (Personal)', 'Mature Content (Personal)',
     ],
     'Cybersecurity': [
       'Ethical Hacking', 'Penetration Testing', 'Red Team', 'Blue Team',
@@ -109,6 +114,9 @@ abstract final class SeedData {
       'Digital Forensics', 'Malware Analysis', 'Reverse Engineering',
       'OSINT', 'Threat Intelligence', 'Incident Response', 'SIEM',
       'CTF', 'Vulnerability Research', 'Active Directory', 'Detection Engineering',
+      'Threat Hunting', 'Zero Trust', 'Identity & Access Management',
+      'Vulnerability Management', 'Security Auditing', 'Windows Internals',
+      'Linux Security', 'Exploit Development (Research)',
     ],
     'Web Automation': [
       'Playwright', 'Selenium', 'Puppeteer', 'Browser Automation',
@@ -119,7 +127,7 @@ abstract final class SeedData {
       'Windows 11', 'Performance Optimization', 'Registry', 'Group Policy',
       'PowerShell', 'WSL', 'Automation', 'Windows Internals', 'Drivers',
       'Diagnostics', 'Gaming Optimization', 'Windows Terminal',
-      'Networking', 'Backup & Recovery',
+      'Networking', 'Backup & Recovery', 'Troubleshooting',
     ],
     'Linux': [
       'Ubuntu', 'Debian', 'Arch', 'Fedora', 'Kali', 'Bash', 'Zsh',
@@ -140,6 +148,7 @@ abstract final class SeedData {
       'PDF Library', 'OCR', 'Academic Papers', 'White Papers',
       'Documentation', 'Personal Wiki', 'Knowledge Graph', 'Citations',
       'Semantic Search', 'Full-Text Search', 'Markdown Notes',
+      'PDF Search', 'Technical Documentation', 'E-books', 'File Search',
     ],
     'Business': [
       'Branding', 'Marketing', 'Sales', 'Finance', 'Legal',
@@ -158,7 +167,7 @@ abstract final class SeedData {
       'EPG Management', 'Channel Metadata', 'Logo Management',
       'Playlist Validation', 'Duplicate Detection', 'Playlist Merging',
       'VOD Metadata', 'Streaming Diagnostics', 'Buffer Analysis',
-      'FFmpeg Workflows', 'Jellyfin', 'Plex', 'Kodi',
+      'FFmpeg Workflows', 'Media Libraries', 'Jellyfin', 'Plex', 'Kodi',
     ],
     'Finance & Analytics': [
       'Personal Finance', 'Investing Research', 'Sports Analytics',
@@ -177,6 +186,7 @@ abstract final class SeedData {
     'Personal Archive': [
       'Notes', 'Journal', 'Experiments', 'Bookmarks', 'Saved Searches',
       'Attachments', 'Screenshots', 'Voice Notes', 'Projects', 'Ideas',
+      'Life Hacks', 'Learning',
     ],
     'Reverse Engineering': [
       'Binary Analysis', 'Static Analysis', 'Dynamic Analysis',
