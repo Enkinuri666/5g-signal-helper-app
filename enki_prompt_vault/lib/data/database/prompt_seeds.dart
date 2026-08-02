@@ -3610,5 +3610,229 @@ Keep a consistent style across all shots.''',
       'difficulty': 'Advanced',
       'variables': 'storyboard::Beats/scenes || style::Consistent look',
     },
+
+    // =====================================================
+    // IMAGE GENERATION - Tasteful adult-adjacent (glamour /
+    // boudoir / editorial / fine-art). Non-explicit, implied
+    // only. No explicit content, no real people.
+    // =====================================================
+    {
+      'title': 'Boudoir Window-Light Portrait',
+      'description': 'Elegant, implied boudoir mood with soft natural light',
+      'body': '''Create a tasteful, non-explicit boudoir portrait prompt (implied, not explicit).
+
+Subject: {{subject}} (adult), fully covered in {{wardrobe}} such as a silk robe or oversized knit
+Setting: {{setting}}
+
+Compose with:
+1. Soft directional window light, low-key with gentle shadow falloff
+2. Relaxed, confident pose; suggestion through posture and gaze, nothing explicit
+3. 85mm portrait lens feel, shallow depth of field
+4. Warm, muted color grade and film-grain texture
+5. Tasteful framing that keeps it elegant and editorial
+Return one polished prompt plus a negative prompt (avoid explicit content, distortion).''',
+      'category': 'Image Generation',
+      'subcategory': 'Mature Content (Personal)',
+      'tags': 'boudoir, glamour, tasteful, implied, lighting',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'subject::Adult subject description || wardrobe::Covered outfit || setting::Room/mood',
+      'rating': 4,
+    },
+    {
+      'title': 'Lingerie Fashion Editorial',
+      'description': 'Magazine-style lingerie editorial, styled and tasteful',
+      'body': '''Write a fashion-editorial image prompt in the style of a magazine lingerie shoot (tasteful, non-explicit).
+
+Look: {{look}}
+Set: {{set}}
+
+Include:
+1. Styling and fabric detail (lace, silk, texture) treated as fashion
+2. Editorial posing, elegant lines, strong silhouette
+3. Studio or location lighting with a clear key/rim setup
+4. Camera and lens feel, aspect ratio for a cover or spread
+5. Color story and mood
+Keep it classy and clothing-forward. Return one prompt plus a negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Fashion',
+      'tags': 'fashion, editorial, lingerie, styling, tasteful',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'look::Wardrobe and vibe || set::Studio or location',
+    },
+    {
+      'title': 'Fine-Art Silhouette Figure',
+      'description': 'Backlit artistic silhouette, form implied through light',
+      'body': '''Create a fine-art figure prompt where the form is implied through silhouette and light (non-explicit).
+
+Concept: {{concept}}
+
+Specify:
+1. Strong backlight or rim light so the subject reads mostly as silhouette
+2. Elegant, artistic pose emphasizing line and shape
+3. Haze, drapery, or sheer fabric for artful concealment
+4. Minimal, moody background and negative space
+5. Monochrome or restrained palette
+Return one prompt plus a negative prompt. Keep it gallery fine-art, not explicit.''',
+      'category': 'Image Generation',
+      'subcategory': 'Mature Content (Personal)',
+      'tags': 'fine art, silhouette, backlight, implied, artistic',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Advanced',
+      'variables': 'concept::Mood and composition idea',
+    },
+    {
+      'title': 'Retro Pin-Up Glamour Portrait',
+      'description': 'Playful vintage pin-up styling, tasteful and fun',
+      'body': '''Write a retro pin-up glamour portrait prompt (tasteful, clothed, playful).
+
+Subject: {{subject}} (adult)
+Era/style: {{style}}
+
+Include:
+1. Vintage wardrobe and hair/makeup styling
+2. Playful, confident pose in classic pin-up tradition
+3. Warm studio lighting, soft glow
+4. Retro color grade and set dressing
+5. Cheeky but wholesome mood
+Return one prompt plus a negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Portraits',
+      'tags': 'pin-up, glamour, retro, portrait, tasteful',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'subject::Adult subject || style::e.g. 1950s pin-up',
+    },
+    {
+      'title': 'Low-Key Sensual Lighting Study',
+      'description': 'Chiaroscuro lighting craft for an elegant figure study',
+      'body': '''Produce a prompt focused on low-key, sensual lighting craft (tasteful, non-explicit).
+
+Subject: {{subject}} (adult, tastefully covered or artfully concealed)
+
+Teach the lighting:
+1. Single soft key at a steep angle for dramatic falloff
+2. Subtle rim/hair light to separate from background
+3. Deep shadows used for elegant concealment
+4. Skin rendered natural, not glossy or exaggerated
+5. Mood, palette, and lens feel
+Return one prompt plus a negative prompt emphasizing tasteful, non-explicit results.''',
+      'category': 'Image Generation',
+      'subcategory': 'Lighting',
+      'tags': 'lighting, chiaroscuro, low-key, figure study, tasteful',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Advanced',
+      'variables': 'subject::Adult subject description',
+    },
+    {
+      'title': 'Swimwear Beach Editorial',
+      'description': 'Bright, healthy swimwear editorial in natural light',
+      'body': '''Write a swimwear editorial prompt (tasteful, healthy, fashion-forward).
+
+Look: {{look}}
+Location: {{location}}
+
+Include:
+1. Swimwear styling treated as fashion
+2. Dynamic, confident pose; active or relaxed
+3. Natural golden-hour or bright midday light
+4. Coastal setting and color story
+5. Camera/lens and aspect ratio
+Return one prompt plus a negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Fashion',
+      'tags': 'swimwear, editorial, beach, fashion, natural light',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Beginner',
+      'variables': 'look::Swimwear and vibe || location::Beach/pool setting',
+    },
+
+    // =====================================================
+    // VIDEO GENERATION - Tasteful suggestive motion (i2v).
+    // Graceful, non-explicit movement only.
+    // =====================================================
+    {
+      'title': 'Slow-Turn Glamour Motion',
+      'description': 'A single elegant slow-turn shot for image-to-video',
+      'body': '''Write an image-to-video motion prompt for one elegant shot (tasteful, non-explicit).
+
+Source image: {{source}}
+
+Motion direction:
+1. A slow, graceful turn toward camera, weight shifting naturally
+2. Subtle hair movement and fabric flow
+3. A soft confident glance to camera at the end
+4. Gentle push-in or locked frame; smooth, no warping
+5. Cinematic lighting preserved from the source
+Keep motion subtle and elegant. Suggestive only through poise, nothing explicit.''',
+      'category': 'Video Generation',
+      'subcategory': 'Mature Content (Personal)',
+      'tags': 'i2v, motion, glamour, tasteful, slow turn',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Intermediate',
+      'variables': 'source::The still image to animate',
+      'rating': 4,
+    },
+    {
+      'title': 'Fabric & Hair in Motion',
+      'description': 'Wind-driven fabric and hair movement, artful',
+      'body': '''Create an image-to-video prompt driven by fabric and hair motion (tasteful, non-explicit).
+
+Source image: {{source}}
+
+Motion:
+1. A gentle breeze moves hair and any drapery or sheer fabric
+2. Slow, flowing cloth dynamics for an artful reveal that stays covered
+3. Micro-movements: breathing, a slight sway
+4. Steady camera or slow drift, smooth and grain-consistent
+Emphasize elegance and flow; nothing explicit.''',
+      'category': 'Video Generation',
+      'subcategory': 'Cinematic Video',
+      'tags': 'i2v, fabric, hair, motion, cinematic',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Intermediate',
+      'variables': 'source::The still image to animate',
+    },
+    {
+      'title': 'Confident Runway Walk',
+      'description': 'Fashion runway motion for image-to-video',
+      'body': '''Write an image-to-video prompt for a fashion runway walk (tasteful, fashion-forward).
+
+Source image: {{source}}
+
+Motion:
+1. A confident, rhythmic walk toward camera
+2. Natural garment movement and pose transitions
+3. Runway or editorial lighting, shallow depth of field
+4. Slow-motion option for drama; smooth, stable motion
+Keep it editorial and elegant.''',
+      'category': 'Video Generation',
+      'subcategory': 'Cinematic Video',
+      'tags': 'i2v, runway, fashion, motion, editorial',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Intermediate',
+      'variables': 'source::The still image to animate',
+    },
+    {
+      'title': 'Boudoir Ambient Micro-Motion',
+      'description': 'Subtle, elegant ambient motion for a boudoir still',
+      'body': '''Create an image-to-video prompt with minimal, elegant ambient motion (tasteful, non-explicit).
+
+Source image: {{source}} (adult, tastefully covered)
+
+Motion:
+1. Soft breathing and a slow, relaxed shift in pose
+2. Gentle light flicker or slow shadow movement for mood
+3. A subtle gaze or slight smile toward camera
+4. Locked or barely-drifting frame; keep it calm and cinematic
+Suggestive only through mood and poise; keep it non-explicit and covered.''',
+      'category': 'Video Generation',
+      'subcategory': 'Mature Content (Personal)',
+      'tags': 'i2v, boudoir, ambient motion, tasteful, mood',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Advanced',
+      'variables': 'source::The still image to animate',
+    },
   ];
 }
