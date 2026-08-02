@@ -70,21 +70,6 @@ abstract final class DatabaseSchema {
       FOREIGN KEY (prompt_id) REFERENCES prompts(id) ON DELETE CASCADE
     )
     ''',
-    // FTS5 virtual table for fast full-text search
-    '''
-    CREATE VIRTUAL TABLE prompts_fts USING fts5(
-      title,
-      description,
-      body,
-      tags,
-      notes,
-      personal_notes,
-      category,
-      ai_models,
-      content='prompts',
-      content_rowid='rowid'
-    )
-    ''',
     // Indexes
     'CREATE INDEX idx_prompts_category ON prompts(category)',
     'CREATE INDEX idx_prompts_is_favorite ON prompts(is_favorite)',
@@ -98,26 +83,5 @@ abstract final class DatabaseSchema {
     'CREATE INDEX idx_collections_parent_id ON collections(parent_id)',
     'CREATE INDEX idx_categories_parent_id ON categories(parent_id)',
     'CREATE INDEX idx_prompt_versions_prompt_id ON prompt_versions(prompt_id)',
-    // Triggers to keep FTS in sync
-    '''
-    CREATE TRIGGER prompts_ai AFTER INSERT ON prompts BEGIN
-      INSERT INTO prompts_fts(rowid, title, description, body, tags, notes, personal_notes, category, ai_models)
-      VALUES (new.rowid, new.title, new.description, new.body, new.tags, new.notes, new.personal_notes, new.category, new.ai_models);
-    END
-    ''',
-    '''
-    CREATE TRIGGER prompts_ad AFTER DELETE ON prompts BEGIN
-      INSERT INTO prompts_fts(prompts_fts, rowid, title, description, body, tags, notes, personal_notes, category, ai_models)
-      VALUES ('delete', old.rowid, old.title, old.description, old.body, old.tags, old.notes, old.personal_notes, old.category, old.ai_models);
-    END
-    ''',
-    '''
-    CREATE TRIGGER prompts_au AFTER UPDATE ON prompts BEGIN
-      INSERT INTO prompts_fts(prompts_fts, rowid, title, description, body, tags, notes, personal_notes, category, ai_models)
-      VALUES ('delete', old.rowid, old.title, old.description, old.body, old.tags, old.notes, old.personal_notes, old.category, old.ai_models);
-      INSERT INTO prompts_fts(rowid, title, description, body, tags, notes, personal_notes, category, ai_models)
-      VALUES (new.rowid, new.title, new.description, new.body, new.tags, new.notes, new.personal_notes, new.category, new.ai_models);
-    END
-    ''',
   ];
 }

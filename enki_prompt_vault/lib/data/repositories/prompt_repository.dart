@@ -176,19 +176,48 @@ class PromptRepository {
     return rows.map(PromptModel.fromMap).toList();
   }
 
+  // Columns searched by [search]; mirrors the fields the app cares about.
+  static const List<String> _searchColumns = [
+    'title',
+    'description',
+    'body',
+    'tags',
+    'notes',
+    'personal_notes',
+    'category',
+    'ai_models',
+  ];
+
   Future<List<PromptModel>> search(String query, {int limit = 50}) async {
     final db = await _db.database;
-    if (query.trim().isEmpty) return [];
+    final terms = query
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
+    if (terms.isEmpty) return [];
 
-    final ftsQuery = query.split(' ').map((w) => '$w*').join(' ');
+    // Substring match per term (AND across terms, OR across columns). Uses
+    // LIKE rather than FTS5 because Android's bundled SQLite does not always
+    // ship the fts5 module.
+    final whereClauses = <String>[];
+    final args = <Object?>[];
+    for (final term in terms) {
+      final like = '%${term.replaceAll('%', '\\%').replaceAll('_', '\\_')}%';
+      whereClauses
+          .add('(${_searchColumns.map((c) => "$c LIKE ? ESCAPE '\\'").join(' OR ')})');
+      for (var i = 0; i < _searchColumns.length; i++) {
+        args.add(like);
+      }
+    }
+    args.add(limit);
 
     final rows = await db.rawQuery('''
-      SELECT p.* FROM prompts p
-      INNER JOIN prompts_fts ON prompts_fts.rowid = p.rowid
-      WHERE prompts_fts MATCH ?
-      ORDER BY rank
+      SELECT * FROM prompts
+      WHERE ${whereClauses.join(' AND ')}
+      ORDER BY is_pinned DESC, use_count DESC, modified_at DESC
       LIMIT ?
-    ''', [ftsQuery, limit]);
+    ''', args);
 
     return rows.map(PromptModel.fromMap).toList();
   }
