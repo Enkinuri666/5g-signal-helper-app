@@ -26,7 +26,10 @@ class DatabaseHelper {
       version: AppConstants.dbVersion,
       onCreate: _onCreate,
       onConfigure: (db) async {
-        await db.execute('PRAGMA journal_mode=WAL');
+        // PRAGMA journal_mode returns a row, so it must run through rawQuery;
+        // execute() throws "Queries can be performed using ... query or
+        // rawQuery methods only" on Android.
+        await db.rawQuery('PRAGMA journal_mode=WAL');
         await db.execute('PRAGMA synchronous=NORMAL');
         await db.execute('PRAGMA foreign_keys=ON');
       },
