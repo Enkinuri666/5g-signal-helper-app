@@ -172,7 +172,7 @@ class BackupScreen extends ConsumerWidget {
   }
 
   void _restoreFromFile(BuildContext context, WidgetRef ref) async {
-    final result = await FilePicker.pickFiles(
+    final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
     );
