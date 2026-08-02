@@ -33,6 +33,14 @@ jobs:
         working-directory: enki_prompt_vault
         run: flutter test
 
+      - name: Clean Flutter artifacts
+        working-directory: enki_prompt_vault
+        run: flutter clean
+
+      - name: Reinstall dependencies (fresh)
+        working-directory: enki_prompt_vault
+        run: flutter pub get
+
       - name: Build release APK
         working-directory: enki_prompt_vault
         run: flutter build apk --release
