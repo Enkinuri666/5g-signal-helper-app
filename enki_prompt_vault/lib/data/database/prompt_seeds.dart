@@ -1651,5 +1651,1964 @@ If you need more context, tell me exactly what additional information would help
       'rating': 5,
       'is_favorite': 1,
     },
+
+    // =====================================================
+    // CYBERSECURITY (defensive / research)
+    // =====================================================
+    {
+      'title': 'Threat Model a System (STRIDE)',
+      'description': 'Produce a STRIDE threat model for an architecture',
+      'body': '''You are a senior application security engineer. Build a STRIDE threat model for the system below.
+
+System description:
+"""
+{{system_description}}
+"""
+
+For each component and trust boundary, enumerate threats across the STRIDE categories:
+- Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege
+
+For each threat provide:
+1. Affected component / data flow
+2. Attack scenario (concise)
+3. Likelihood and impact (Low/Medium/High)
+4. Concrete mitigation and the control that enforces it
+
+End with a prioritized remediation backlog (highest risk first).''',
+      'category': 'Cybersecurity',
+      'subcategory': 'Secure Coding',
+      'tags': 'threat modeling, stride, appsec, design review',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'system_description::Architecture, data flows, and trust boundaries',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Detection Engineering: Sigma Rule',
+      'description': 'Draft a Sigma detection rule from an attack technique',
+      'body': '''Act as a detection engineer. Given the behaviour below, write a Sigma rule that detects it with minimal false positives.
+
+Behaviour / technique: {{technique}}
+Log source: {{log_source}}
+
+Deliver:
+1. A valid Sigma rule (title, status, logsource, detection, condition, level, tags with the MITRE ATT&CK id)
+2. The assumptions about field names and how to adapt them
+3. Known false-positive sources and how to tune them out
+4. A test plan describing benign and malicious events to validate the rule''',
+      'category': 'Cybersecurity',
+      'subcategory': 'Detection Engineering',
+      'tags': 'sigma, detection, siem, mitre attack, blue team',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'technique::Attacker behaviour to detect || log_source::e.g. Windows Security, Sysmon, cloudtrail',
+      'rating': 5,
+    },
+    {
+      'title': 'Incident Response Runbook',
+      'description': 'Generate a containment-to-recovery IR runbook',
+      'body': '''You are an incident responder. Produce a runbook for handling this incident type: {{incident_type}}.
+
+Structure it against the NIST IR lifecycle:
+1. Preparation prerequisites (tooling, access, logging)
+2. Detection & analysis: signals, triage questions, severity criteria
+3. Containment: short-term and long-term steps
+4. Eradication: how to remove the root cause
+5. Recovery: safe restoration and monitoring
+6. Post-incident: lessons learned and metrics
+
+For each phase list the concrete commands or console actions, the owner role, and the evidence to preserve for forensics.''',
+      'category': 'Cybersecurity',
+      'subcategory': 'Incident Response',
+      'tags': 'incident response, runbook, nist, blue team, forensics',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'incident_type::e.g. ransomware, BEC, credential theft, web shell',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Explain a CVE for Remediation',
+      'description': 'Turn a CVE into a plain-English risk and fix brief',
+      'body': '''Summarize the following vulnerability for a mixed audience of engineers and managers.
+
+CVE / advisory: {{cve}}
+Our exposure: {{context}}
+
+Provide:
+1. What the flaw is, in plain language
+2. How an attacker would realistically abuse it (conceptual, not a working exploit)
+3. Affected versions and how to confirm we are affected
+4. Prioritized remediation: patch, config change, or compensating control
+5. Detection ideas while unpatched
+
+Keep it defensive and remediation-focused.''',
+      'category': 'Cybersecurity',
+      'subcategory': 'Vulnerability Management',
+      'tags': 'cve, vulnerability, remediation, patching',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'cve::CVE id or advisory text || context::Where/how the component is used',
+      'rating': 4,
+    },
+    {
+      'title': 'CTF Challenge Walkthrough Coach',
+      'description': 'Guide learning through a CTF challenge without spoiling',
+      'body': '''You are a CTF mentor. I am learning and want to solve this challenge myself.
+
+Category: {{category}}
+Challenge details: {{details}}
+
+Coach me:
+1. Ask what I have tried so far
+2. Give the smallest useful hint, not the full solution
+3. Point me to the concept or tool I should study
+4. Only reveal the next step if I say I am stuck after trying
+5. After I solve it, explain the underlying vulnerability class and how to defend against it''',
+      'category': 'Cybersecurity',
+      'subcategory': 'CTF',
+      'tags': 'ctf, learning, mentor, hints',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'category::e.g. web, pwn, crypto, forensics || details::Challenge prompt and files',
+    },
+
+    // =====================================================
+    // REVERSE ENGINEERING
+    // =====================================================
+    {
+      'title': 'Explain Disassembly',
+      'description': 'Annotate an assembly listing in plain language',
+      'body': '''You are a reverse engineering tutor. Explain what the following {{arch}} assembly does.
+
+```
+{{assembly}}
+```
+
+Provide:
+1. A high-level summary of the function purpose
+2. A line-by-line or block-by-block annotation
+3. Reconstructed pseudo-C equivalent
+4. Calling convention, arguments, and return value
+5. Any notable tricks (anti-debug, obfuscation, stack canaries)''',
+      'category': 'Reverse Engineering',
+      'subcategory': 'Assembly',
+      'tags': 'assembly, disassembly, annotation, pseudocode',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'arch::x86, x64, or ARM || assembly::The disassembly listing',
+      'rating': 5,
+    },
+    {
+      'title': 'Ghidra Decompiler Cleanup',
+      'description': 'Refactor messy decompiler output into readable C',
+      'body': '''Given raw decompiler output, produce clean, idiomatic C and explain the logic.
+
+Decompiler output:
+```
+{{code}}
+```
+
+Tasks:
+1. Rename variables and functions to meaningful names based on behaviour
+2. Replace magic numbers with named constants where the meaning is clear
+3. Recover structs from pointer arithmetic and field offsets
+4. Add comments describing intent
+5. Note anything ambiguous where you are inferring rather than certain''',
+      'category': 'Reverse Engineering',
+      'subcategory': 'Decompilers',
+      'tags': 'ghidra, decompiler, cleanup, c, refactor',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'code::Raw decompiler pseudo-C',
+      'rating': 4,
+    },
+    {
+      'title': 'PE / ELF Header Triage',
+      'description': 'Interpret a binary header dump for quick triage',
+      'body': '''Act as a malware analyst doing static triage. Interpret this {{format}} header/section dump.
+
+```
+{{dump}}
+```
+
+Explain:
+1. Entry point, sections, and anything unusual (high entropy, odd section names, RWX)
+2. Imports/exports and what capabilities they hint at
+3. Signs of packing or obfuscation
+4. Suggested safe next analysis steps (all in an isolated lab)
+Keep it analytical and defensive.''',
+      'category': 'Reverse Engineering',
+      'subcategory': 'PE Format',
+      'tags': 'pe, elf, static analysis, triage, malware',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'format::PE or ELF || dump::Header and section output',
+    },
+    {
+      'title': 'Debugger Strategy Planner',
+      'description': 'Plan a dynamic-analysis session for a target',
+      'body': '''You are guiding a dynamic analysis session with {{debugger}}.
+
+Goal: {{goal}}
+Target: {{target}}
+
+Produce a plan:
+1. Breakpoints to set and why (functions, syscalls, memory writes)
+2. What to watch (registers, stack, heap, arguments)
+3. How to bypass common anti-debugging checks safely in a lab
+4. What artifacts to capture for later
+5. Stop conditions that mean the goal is achieved''',
+      'category': 'Reverse Engineering',
+      'subcategory': 'Dynamic Analysis',
+      'tags': 'debugging, dynamic analysis, breakpoints, lab',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'debugger::e.g. x64dbg, gdb, WinDbg || goal::What you want to learn || target::The binary',
+    },
+    {
+      'title': 'Binary Diffing Report',
+      'description': 'Compare two binary versions to find the changed logic',
+      'body': '''Compare version A and version B of a binary and explain what changed.
+
+Notes about A: {{notes_a}}
+Notes about B: {{notes_b}}
+Diff observations: {{diff}}
+
+Deliver:
+1. Functions added, removed, or modified
+2. The most likely purpose of each change (bugfix, feature, patched vuln)
+3. If a security patch, the class of the underlying flaw
+4. Follow-up questions to confirm your hypothesis''',
+      'category': 'Reverse Engineering',
+      'subcategory': 'Binary Analysis',
+      'tags': 'bindiff, patch diffing, analysis',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'notes_a::Old version notes || notes_b::New version notes || diff::Tool diff output',
+    },
+
+    // =====================================================
+    // NETWORKING
+    // =====================================================
+    {
+      'title': 'Packet Capture Analysis',
+      'description': 'Interpret a pcap summary and find the problem',
+      'body': '''You are a network engineer analyzing traffic. Given this capture summary, diagnose the issue.
+
+Summary / Wireshark output:
+"""
+{{capture}}
+"""
+Symptom: {{symptom}}
+
+Explain:
+1. What the conversation is doing (protocols, handshakes, retransmissions)
+2. Where it breaks and the likely cause (MTU, TLS, DNS, RST, latency)
+3. The exact filter or follow-up capture to confirm
+4. The fix and how to verify it''',
+      'category': 'Networking',
+      'subcategory': 'TCP/IP',
+      'tags': 'wireshark, pcap, tcp, troubleshooting',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'capture::Capture summary || symptom::Observed problem',
+      'rating': 4,
+    },
+    {
+      'title': 'Subnet & VLAN Plan',
+      'description': 'Design an addressing and VLAN scheme',
+      'body': '''Design an IP addressing and VLAN plan for the network below.
+
+Requirements: {{requirements}}
+Constraints: {{constraints}}
+
+Provide:
+1. VLAN list with purpose and IDs
+2. Subnet allocation (CIDR) sized for growth, with usable host counts
+3. Gateway and DHCP scope suggestions
+4. Inter-VLAN routing and firewall rules at a high level
+5. A table summarizing the plan''',
+      'category': 'Networking',
+      'subcategory': 'VLAN',
+      'tags': 'subnetting, vlan, cidr, network design',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'requirements::Sites, segments, device counts || constraints::Existing ranges, hardware',
+      'rating': 4,
+    },
+    {
+      'title': 'DNS Troubleshooting Guide',
+      'description': 'Systematically diagnose a DNS resolution failure',
+      'body': '''Help me diagnose a DNS problem step by step.
+
+Symptom: {{symptom}}
+Environment: {{environment}}
+
+Walk through the resolution path:
+1. Is it the client resolver, cache, or upstream?
+2. The exact dig/nslookup commands to run at each layer and what each result would mean
+3. Common causes (split-horizon, TTL, DNSSEC, records missing, wrong search domain)
+4. The fix and a verification command''',
+      'category': 'Networking',
+      'subcategory': 'DNS',
+      'tags': 'dns, dig, troubleshooting, resolution',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'symptom::What fails || environment::OS, resolver, network',
+    },
+    {
+      'title': 'WireGuard Tunnel Setup',
+      'description': 'Generate a WireGuard config for two peers',
+      'body': '''Produce a working WireGuard configuration.
+
+Topology: {{topology}}
+Peer A: {{peer_a}}
+Peer B: {{peer_b}}
+
+Deliver:
+1. wg0.conf for each peer with placeholders for keys
+2. The key generation commands
+3. AllowedIPs reasoning for full-tunnel vs split-tunnel
+4. Firewall/NAT and IP forwarding steps
+5. A connectivity test and troubleshooting checklist''',
+      'category': 'Networking',
+      'subcategory': 'WireGuard',
+      'tags': 'wireguard, vpn, tunnel, config',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'topology::site-to-site or road-warrior || peer_a::Endpoint/subnet || peer_b::Endpoint/subnet',
+      'rating': 4,
+    },
+    {
+      'title': 'Reverse Proxy Config Reviewer',
+      'description': 'Review and harden a reverse proxy configuration',
+      'body': '''Review this reverse proxy config for correctness, performance, and security.
+
+Proxy: {{proxy}}
+Config:
+```
+{{config}}
+```
+
+Report:
+1. Correctness issues (routing, headers, upstream health)
+2. Security hardening (TLS, HSTS, header stripping, rate limits)
+3. Performance (caching, keepalive, buffering, compression)
+4. A corrected config block with comments''',
+      'category': 'Networking',
+      'subcategory': 'Reverse Proxies',
+      'tags': 'nginx, caddy, reverse proxy, tls, hardening',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'proxy::nginx, Caddy, Traefik, HAProxy || config::The config to review',
+    },
+
+    // =====================================================
+    // SELF-HOSTING
+    // =====================================================
+    {
+      'title': 'Docker Compose Stack Generator',
+      'description': 'Produce a hardened docker-compose for a service',
+      'body': '''Generate a production-minded docker-compose.yml for: {{service}}.
+
+Requirements: {{requirements}}
+
+Include:
+1. Pinned image versions and a healthcheck
+2. Named volumes for persistence and a note on backups
+3. Environment via .env with secrets called out
+4. Resource limits and restart policy
+5. A reverse-proxy label/section if applicable
+6. Post-deploy verification steps''',
+      'category': 'Self-Hosting',
+      'subcategory': 'Docker',
+      'tags': 'docker, compose, self-hosting, deployment',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'service::App to host || requirements::Ports, storage, integrations',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Home Lab Architecture Review',
+      'description': 'Design or critique a home lab topology',
+      'body': '''Act as a home lab architect. Given my hardware and goals, propose a clean architecture.
+
+Hardware: {{hardware}}
+Goals: {{goals}}
+
+Cover:
+1. Hypervisor / OS layout and VM/container split
+2. Networking (VLANs, DNS, reverse proxy, remote access)
+3. Storage and backup strategy (3-2-1)
+4. Monitoring and alerting
+5. A phased build order so each step is usable''',
+      'category': 'Self-Hosting',
+      'subcategory': 'Home Lab',
+      'tags': 'home lab, proxmox, architecture, planning',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'hardware::Servers, NAS, network gear || goals::What you want to run',
+      'rating': 4,
+    },
+    {
+      'title': '3-2-1 Backup Plan',
+      'description': 'Design a resilient backup and restore strategy',
+      'body': '''Design a 3-2-1 backup strategy for my self-hosted data.
+
+Data to protect: {{data}}
+Constraints: {{constraints}}
+
+Provide:
+1. What to back up and at what frequency (RPO)
+2. Tooling suggestions (e.g. restic, Borg, snapshots)
+3. On-site + off-site targets and encryption
+4. A restore test procedure and how often to run it
+5. A one-page schedule table''',
+      'category': 'Self-Hosting',
+      'subcategory': 'Backups',
+      'tags': 'backup, restic, borg, 3-2-1, recovery',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'data::Volumes, databases, configs || constraints::Budget, bandwidth, retention',
+      'rating': 4,
+    },
+    {
+      'title': 'Kubernetes Manifest Review',
+      'description': 'Review a k8s manifest for reliability and security',
+      'body': '''Review this Kubernetes manifest and suggest improvements.
+
+```
+{{manifest}}
+```
+
+Check:
+1. Resource requests/limits and probes
+2. Security context (non-root, read-only fs, dropped capabilities)
+3. Rolling update strategy and replica count
+4. Config/secret handling
+5. Provide a corrected manifest with comments''',
+      'category': 'Self-Hosting',
+      'subcategory': 'Kubernetes',
+      'tags': 'kubernetes, manifest, review, security',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'manifest::The YAML to review',
+    },
+    {
+      'title': 'Uptime Monitoring Setup',
+      'description': 'Plan monitoring and alerting for self-hosted services',
+      'body': '''Help me set up monitoring for my self-hosted services.
+
+Services: {{services}}
+Preferred stack: {{stack}}
+
+Deliver:
+1. What to monitor (uptime, latency, cert expiry, disk, container health)
+2. Suggested tools and how they fit together
+3. Example alert rules with sensible thresholds
+4. Notification routing (avoid alert fatigue)
+5. A dashboard layout outline''',
+      'category': 'Self-Hosting',
+      'subcategory': 'Monitoring',
+      'tags': 'monitoring, uptime, alerting, grafana, prometheus',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'services::What to watch || stack::e.g. Uptime Kuma, Prometheus+Grafana',
+    },
+
+    // =====================================================
+    // WINDOWS
+    // =====================================================
+    {
+      'title': 'PowerShell Script Builder',
+      'description': 'Generate a robust PowerShell script for a task',
+      'body': '''Write a production-quality PowerShell script that does the following:
+
+Task: {{task}}
+
+Requirements:
+1. param() block with validation and comment-based help
+2. Error handling with try/catch and -ErrorAction
+3. Support -WhatIf / -Confirm for destructive actions
+4. Clear progress and verbose output
+5. Idempotent where possible
+Explain how to run it and any required privileges.''',
+      'category': 'Windows',
+      'subcategory': 'PowerShell',
+      'tags': 'powershell, scripting, automation, windows',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'task::What the script should accomplish',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Windows 11 Debloat Plan',
+      'description': 'Safe, reversible optimization of a fresh install',
+      'body': '''Recommend a safe optimization plan for Windows 11.
+
+Use case: {{use_case}}
+Risk tolerance: {{risk}}
+
+Provide:
+1. Which built-in apps/services are safe to remove or disable and why
+2. Privacy/telemetry settings worth changing
+3. Performance tweaks with the tradeoff for each
+4. What NOT to touch (things that break updates or security)
+5. How to create a restore point first and revert each change''',
+      'category': 'Windows',
+      'subcategory': 'Performance Optimization',
+      'tags': 'windows 11, debloat, optimization, privacy',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'use_case::gaming, dev, general || risk::conservative or aggressive',
+      'rating': 4,
+    },
+    {
+      'title': 'Registry Tweak Explainer',
+      'description': 'Explain and safely apply a registry change',
+      'body': '''Explain this registry change and how to apply it safely.
+
+Goal: {{goal}}
+Key/value (if known): {{key}}
+
+Provide:
+1. What the key controls and the effect of changing it
+2. The exact path, value name, type, and data
+3. A .reg file to apply it and one to revert it
+4. Whether a reboot or sign-out is required
+5. Risks and how to back up the key first''',
+      'category': 'Windows',
+      'subcategory': 'Registry',
+      'tags': 'registry, regedit, tweak, windows',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'goal::Desired behaviour change || key::Known key if any',
+    },
+    {
+      'title': 'WSL Dev Environment Setup',
+      'description': 'Set up a clean WSL2 development environment',
+      'body': '''Guide me through setting up a WSL2 dev environment.
+
+Distro: {{distro}}
+Stack: {{stack}}
+
+Cover:
+1. Enabling WSL2 and installing the distro
+2. Base packages, shell, and dotfiles
+3. Git, SSH keys, and credential sharing with Windows
+4. Editor integration (VS Code remote)
+5. Performance tips (file location, memory limits via .wslconfig)''',
+      'category': 'Windows',
+      'subcategory': 'WSL',
+      'tags': 'wsl, wsl2, development, linux, setup',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'distro::e.g. Ubuntu || stack::Languages/tools you need',
+      'rating': 4,
+    },
+    {
+      'title': 'Windows Boot / Crash Triage',
+      'description': 'Diagnose a boot failure or BSOD methodically',
+      'body': '''Help me diagnose a Windows stability problem.
+
+Symptom: {{symptom}}
+Recent changes: {{changes}}
+Error codes (if any): {{codes}}
+
+Walk me through:
+1. Interpreting the stop code or boot error
+2. Safe mode / recovery options to try in order
+3. Which logs to read (Event Viewer, minidump) and what to look for
+4. Most likely causes ranked
+5. The fix and how to confirm stability''',
+      'category': 'Windows',
+      'subcategory': 'Diagnostics',
+      'tags': 'bsod, boot, troubleshooting, event viewer',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'symptom::What happens || changes::Recent installs/updates || codes::Stop codes',
+    },
+
+    // =====================================================
+    // LINUX
+    // =====================================================
+    {
+      'title': 'Bash Script with Safeguards',
+      'description': 'Write a robust bash script with strict mode',
+      'body': '''Write a bash script for the task below, production quality.
+
+Task: {{task}}
+
+Requirements:
+1. Start with set -euo pipefail and an error trap
+2. Usage function and argument parsing
+3. Dependency checks before running
+4. Dry-run flag for destructive operations
+5. Clear logging and exit codes
+Explain how to run it and required permissions.''',
+      'category': 'Linux',
+      'subcategory': 'Bash',
+      'tags': 'bash, scripting, automation, strict mode',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'task::What the script should do',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'systemd Service Unit',
+      'description': 'Create a systemd unit for a long-running process',
+      'body': '''Create a systemd service unit for: {{process}}.
+
+Details: {{details}}
+
+Provide:
+1. The .service file (Unit, Service, Install) with sensible restart policy
+2. Hardening directives (User, NoNewPrivileges, ProtectSystem, etc.)
+3. Environment/working directory handling
+4. Enable/start/status/journalctl commands
+5. How to test failure recovery''',
+      'category': 'Linux',
+      'subcategory': 'Services',
+      'tags': 'systemd, service, unit, hardening',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'process::The program to run || details::Path, user, deps',
+      'rating': 4,
+    },
+    {
+      'title': 'Linux Performance Diagnosis',
+      'description': 'Find what is slowing a Linux host',
+      'body': '''Act as an SRE. Help me find the bottleneck on a Linux host.
+
+Symptom: {{symptom}}
+
+Walk the USE method (Utilization, Saturation, Errors) across CPU, memory, disk, and network:
+1. The exact commands to run at each layer (top, vmstat, iostat, ss, etc.)
+2. How to read each output
+3. Likely causes ranked by the evidence
+4. The remediation and how to verify improvement''',
+      'category': 'Linux',
+      'subcategory': 'System Administration',
+      'tags': 'performance, sre, use method, troubleshooting',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'symptom::What is slow or failing',
+    },
+    {
+      'title': 'Permissions & Ownership Fixer',
+      'description': 'Diagnose and fix Linux permission problems safely',
+      'body': '''Help me resolve a permissions problem without breaking the system.
+
+Symptom: {{symptom}}
+Path(s): {{paths}}
+
+Explain:
+1. How to read current ownership and mode (ls -l, getfacl)
+2. What the correct ownership/mode should be and why
+3. The precise chown/chmod/setfacl commands, scoped narrowly
+4. Why blanket recursive 777 is dangerous
+5. How to verify the fix''',
+      'category': 'Linux',
+      'subcategory': 'System Administration',
+      'tags': 'permissions, chmod, chown, acl',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'symptom::Access error || paths::Affected files/dirs',
+    },
+    {
+      'title': 'Package & Dependency Explainer',
+      'description': 'Resolve a package management conflict',
+      'body': '''Help me resolve a package problem on {{distro}}.
+
+Error / situation: {{error}}
+
+Provide:
+1. What the error means
+2. Safe resolution steps for this package manager (apt, dnf, pacman)
+3. How to avoid breaking held/critical packages
+4. How to roll back if it goes wrong
+5. Commands to verify the system is consistent afterward''',
+      'category': 'Linux',
+      'subcategory': 'Debian',
+      'tags': 'apt, dnf, pacman, dependencies, packages',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'distro::Ubuntu/Debian/Fedora/Arch || error::The error text',
+    },
+
+    // =====================================================
+    // WEB AUTOMATION
+    // =====================================================
+    {
+      'title': 'Playwright Script from a Flow',
+      'description': 'Generate a Playwright script for a described flow',
+      'body': '''Write a Playwright (TypeScript) script that automates this flow.
+
+Flow: {{flow}}
+Target site notes: {{notes}}
+
+Requirements:
+1. Robust selectors (roles/text over brittle CSS)
+2. Auto-waiting, no fixed sleeps
+3. Error handling and a screenshot on failure
+4. Config for headless/headed and base URL
+5. Comments explaining each step
+Respect the site terms of service and robots restrictions.''',
+      'category': 'Web Automation',
+      'subcategory': 'Playwright',
+      'tags': 'playwright, automation, typescript, e2e',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'flow::Steps to automate || notes::Selectors, auth, quirks',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Flaky Test Stabilizer',
+      'description': 'Diagnose and fix a flaky browser automation test',
+      'body': '''My browser automation test is flaky. Help me stabilize it.
+
+Test description: {{test}}
+Symptom / failure: {{failure}}
+
+Analyze:
+1. Common flakiness causes (timing, animations, network, test data)
+2. How to replace waits with deterministic conditions
+3. Isolation and retry strategy
+4. A refactored, resilient version of the critical section''',
+      'category': 'Web Automation',
+      'subcategory': 'Browser Automation',
+      'tags': 'flaky tests, stability, waits, automation',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'test::What it does || failure::How it fails',
+    },
+    {
+      'title': 'Selenium to Playwright Migration',
+      'description': 'Port a Selenium script to Playwright',
+      'body': '''Convert this Selenium script to Playwright and improve it.
+
+```
+{{script}}
+```
+
+Deliver:
+1. The equivalent Playwright script
+2. Where auto-waiting removes explicit waits
+3. Selector improvements
+4. Any behaviour differences to watch for''',
+      'category': 'Web Automation',
+      'subcategory': 'Selenium',
+      'tags': 'selenium, playwright, migration, refactor',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'script::The Selenium code',
+    },
+    {
+      'title': 'API Automation Workflow',
+      'description': 'Chain API calls into a reliable automation',
+      'body': '''Design an API automation workflow.
+
+Goal: {{goal}}
+APIs involved: {{apis}}
+
+Provide:
+1. The call sequence with auth and pagination handling
+2. Retry/backoff and idempotency strategy
+3. Data mapping between steps
+4. Error handling and logging
+5. Pseudocode or a script skeleton''',
+      'category': 'Web Automation',
+      'subcategory': 'API Automation',
+      'tags': 'api, automation, workflow, integration',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'goal::Outcome || apis::Endpoints and auth',
+    },
+    {
+      'title': 'Scheduled Task Designer',
+      'description': 'Turn a manual chore into a scheduled job',
+      'body': '''Help me automate and schedule a recurring task.
+
+Task: {{task}}
+Platform: {{platform}}
+
+Deliver:
+1. The script to perform the task
+2. The schedule definition (cron or Task Scheduler) with the timing explained
+3. Logging and failure notification
+4. How to test it runs correctly before trusting it''',
+      'category': 'Web Automation',
+      'subcategory': 'Task Scheduling',
+      'tags': 'cron, scheduling, automation, jobs',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'task::What to automate || platform::Linux cron or Windows Task Scheduler',
+    },
+
+    // =====================================================
+    // WEB RESEARCH
+    // =====================================================
+    {
+      'title': 'Web Scraper Blueprint',
+      'description': 'Plan an ethical, resilient scraper',
+      'body': '''Design a scraper for the target below, respecting its terms and robots.txt.
+
+Target data: {{data}}
+Source: {{source}}
+
+Provide:
+1. Whether an API exists that should be used instead
+2. Selector/parse strategy and pagination
+3. Rate limiting and polite crawling (delays, caching)
+4. Data schema and de-duplication
+5. Handling for layout changes and errors
+Note any legal/ToS considerations to check first.''',
+      'category': 'Web Research',
+      'subcategory': 'Web Scraping',
+      'tags': 'scraping, parsing, ethics, robots.txt',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'data::What to collect || source::Site/section',
+      'rating': 4,
+    },
+    {
+      'title': 'CSS Selector / XPath Helper',
+      'description': 'Produce robust selectors for target elements',
+      'body': '''Given the HTML snippet and target, give me resilient selectors.
+
+HTML:
+```
+{{html}}
+```
+Target: {{target}}
+
+Provide:
+1. A CSS selector and an XPath, preferring stable attributes
+2. Why brittle selectors (nth-child, generated classes) were avoided
+3. A fallback selector
+4. How to verify it matches exactly one element''',
+      'category': 'Web Research',
+      'subcategory': 'CSS Selectors',
+      'tags': 'css, xpath, selectors, parsing',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'html::Markup snippet || target::Element to select',
+    },
+    {
+      'title': 'Advanced Search Operators',
+      'description': 'Craft precise search-engine queries',
+      'body': '''Help me build precise search queries to find: {{goal}}.
+
+Provide several query variations using operators (site:, filetype:, intitle:, quotes, minus, OR, date ranges) and explain what each one narrows down. Then suggest which to try first and how to iterate if results are noisy.''',
+      'category': 'Web Research',
+      'subcategory': 'Search Operators',
+      'tags': 'search, dorking, operators, research',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'goal::What you are trying to find',
+      'rating': 4,
+    },
+    {
+      'title': 'Metadata Extraction Plan',
+      'description': 'Extract structured metadata from pages',
+      'body': '''I need to extract structured metadata from a set of pages.
+
+Fields wanted: {{fields}}
+Page type: {{page_type}}
+
+Provide:
+1. Where each field usually lives (JSON-LD, OpenGraph, meta tags, DOM)
+2. A parsing order that prefers structured data first
+3. Normalization rules (dates, currencies, whitespace)
+4. Output schema (CSV/JSON) example''',
+      'category': 'Web Research',
+      'subcategory': 'Metadata Extraction',
+      'tags': 'metadata, json-ld, opengraph, extraction',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'fields::Data points to capture || page_type::e.g. product, article',
+    },
+    {
+      'title': 'Public Dataset Finder',
+      'description': 'Locate and vet open datasets for a question',
+      'body': '''Help me find public datasets to answer: {{question}}.
+
+Provide:
+1. Candidate open data sources and portals to check
+2. For each, what it likely contains and its license/usage terms
+3. Search terms to use on data portals
+4. How to assess quality (recency, completeness, methodology)
+5. A note on citation and attribution''',
+      'category': 'Web Research',
+      'subcategory': 'Public Dataset Collection',
+      'tags': 'open data, datasets, research, sources',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'question::The question you want data for',
+    },
+
+    // =====================================================
+    // MEDIA PROCESSING
+    // =====================================================
+    {
+      'title': 'FFmpeg Command Builder',
+      'description': 'Generate an exact FFmpeg command for a task',
+      'body': '''Build an FFmpeg command for this task and explain each flag.
+
+Task: {{task}}
+Input: {{input}}
+Target: {{target}}
+
+Provide:
+1. The full command, copy-paste ready
+2. A short explanation of each flag
+3. Quality/size tradeoffs and how to adjust (CRF, bitrate, preset)
+4. A variation for batch processing multiple files''',
+      'category': 'Media Processing',
+      'subcategory': 'FFmpeg',
+      'tags': 'ffmpeg, encoding, transcode, cli',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'task::What to do || input::Source format || target::Desired output',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Video Encoding Settings Advisor',
+      'description': 'Pick codecs and settings for a use case',
+      'body': '''Recommend encoding settings for this use case.
+
+Use case: {{use_case}}
+Constraints: {{constraints}}
+
+Cover:
+1. Codec choice (H.264/H.265/AV1) and why
+2. CRF/bitrate, preset, and resolution guidance
+3. Audio codec and bitrate
+4. Container choice
+5. The tradeoffs between quality, size, and compatibility''',
+      'category': 'Media Processing',
+      'subcategory': 'Video Encoding',
+      'tags': 'encoding, h265, av1, crf, codec',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'use_case::e.g. archival, streaming, mobile || constraints::Size, device, time',
+    },
+    {
+      'title': 'Subtitle Sync & Convert',
+      'description': 'Fix and convert subtitle files',
+      'body': '''Help me fix subtitles.
+
+Problem: {{problem}}
+Formats: {{formats}}
+
+Provide:
+1. How to diagnose sync offset or encoding issues
+2. FFmpeg or tool commands to shift timing or convert format (SRT/ASS/VTT)
+3. How to handle character encoding (UTF-8)
+4. How to burn-in vs keep as a soft track''',
+      'category': 'Media Processing',
+      'subcategory': 'Subtitle Management',
+      'tags': 'subtitles, srt, ass, sync, ffmpeg',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'problem::Sync/encoding/format issue || formats::From -> to',
+    },
+    {
+      'title': 'Batch Media Processing Script',
+      'description': 'Process a folder of media files',
+      'body': '''Write a script to batch-process a folder of media files.
+
+Operation: {{operation}}
+Platform: {{platform}}
+
+Requirements:
+1. Recurse a directory and match by extension
+2. Preserve structure in an output folder
+3. Skip already-processed files (idempotent)
+4. Parallelism with a safe limit
+5. A summary of successes/failures at the end''',
+      'category': 'Media Processing',
+      'subcategory': 'Batch Processing',
+      'tags': 'batch, ffmpeg, script, automation',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'operation::Transcode/resize/etc || platform::bash or PowerShell',
+    },
+    {
+      'title': 'HDR / Tone-Mapping Helper',
+      'description': 'Handle HDR to SDR conversion correctly',
+      'body': '''Help me convert HDR content correctly.
+
+Goal: {{goal}}
+Source: {{source}}
+
+Explain:
+1. The color/transfer characteristics involved (PQ/HLG, BT.2020)
+2. FFmpeg tone-mapping options for HDR to SDR without washed-out colors
+3. How to preserve HDR when remuxing
+4. How to verify the result looks correct''',
+      'category': 'Media Processing',
+      'subcategory': 'HDR',
+      'tags': 'hdr, tone mapping, bt2020, ffmpeg',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'goal::Convert/preserve || source::HDR format',
+    },
+
+    // =====================================================
+    // IPTV & STREAMING
+    // =====================================================
+    {
+      'title': 'M3U Playlist Organizer',
+      'description': 'Clean and structure a messy M3U playlist',
+      'body': '''You are helping organize a personal IPTV M3U playlist.
+
+Goal: {{goal}}
+
+Provide a plan and the logic to:
+1. Parse #EXTINF entries (name, tvg-id, tvg-logo, group-title)
+2. Normalize channel names and group-title categories
+3. Sort by group then name
+4. Flag entries missing tvg-id or logo
+5. Output a clean M3U preserving valid attributes
+Give a script skeleton to do this.''',
+      'category': 'IPTV & Streaming',
+      'subcategory': 'M3U Playlist Management',
+      'tags': 'm3u, iptv, playlist, organize',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'goal::What clean output you want',
+      'rating': 4,
+    },
+    {
+      'title': 'Duplicate Channel Detector',
+      'description': 'Find and merge duplicate playlist entries',
+      'body': '''Help me detect duplicate channels in an M3U playlist.
+
+Notes: {{notes}}
+
+Provide logic to:
+1. Normalize names (case, whitespace, quality tags like HD/FHD)
+2. Group likely duplicates by tvg-id and fuzzy name match
+3. Choose a preferred entry (by resolution or working URL)
+4. Output a de-duplicated playlist plus a report of what was merged
+Give a script skeleton.''',
+      'category': 'IPTV & Streaming',
+      'subcategory': 'Duplicate Detection',
+      'tags': 'iptv, duplicates, m3u, dedupe',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'notes::Playlist quirks and preferences',
+    },
+    {
+      'title': 'EPG Mapping Assistant',
+      'description': 'Match channels to EPG guide data',
+      'body': '''Help me map my channels to EPG (XMLTV) guide data.
+
+Situation: {{situation}}
+
+Provide:
+1. How tvg-id links a channel to XMLTV programme data
+2. A strategy to match channels missing a tvg-id (name normalization, aliases)
+3. How to validate the guide loads and aligns by timezone
+4. Troubleshooting for channels showing no guide''',
+      'category': 'IPTV & Streaming',
+      'subcategory': 'EPG Management',
+      'tags': 'epg, xmltv, tvg-id, guide',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'situation::Player, sources, whats missing',
+    },
+    {
+      'title': 'Stream Buffering Diagnosis',
+      'description': 'Troubleshoot IPTV buffering issues',
+      'body': '''Help me diagnose IPTV buffering.
+
+Symptom: {{symptom}}
+Setup: {{setup}}
+
+Walk through:
+1. Whether it is source, network, or player side
+2. How to test (wired vs wifi, bandwidth, a direct ffplay/VLC test of the URL)
+3. Player buffer/cache settings to adjust
+4. When transcoding vs direct play is the fix
+5. A checklist to isolate the cause''',
+      'category': 'IPTV & Streaming',
+      'subcategory': 'Buffer Analysis',
+      'tags': 'buffering, streaming, troubleshooting, network',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'symptom::When it buffers || setup::Player, device, network',
+    },
+    {
+      'title': 'Jellyfin / Plex Library Setup',
+      'description': 'Structure a media library for clean metadata',
+      'body': '''Help me structure my media library so {{server}} scrapes metadata cleanly.
+
+Content types: {{content}}
+
+Provide:
+1. Folder and file naming conventions for movies and TV
+2. How episodes/seasons should be laid out
+3. NFO/artwork handling and agents/scrapers
+4. Common reasons metadata fails to match and how to fix them
+5. A before/after example''',
+      'category': 'IPTV & Streaming',
+      'subcategory': 'Media Libraries',
+      'tags': 'jellyfin, plex, library, metadata, naming',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'server::Jellyfin/Plex/Kodi || content::Movies, TV, music',
+      'rating': 4,
+    },
+
+    // =====================================================
+    // FINANCE & ANALYTICS
+    // =====================================================
+    {
+      'title': 'Personal Budget Builder',
+      'description': 'Create a realistic monthly budget framework',
+      'body': '''Act as a practical financial coach (not licensed advice). Build a monthly budget framework.
+
+Income: {{income}}
+Fixed costs: {{fixed}}
+Goals: {{goals}}
+
+Provide:
+1. A category breakdown (e.g. 50/30/20 adapted to my numbers)
+2. Where to trim if goals are not met
+3. An emergency-fund target and timeline
+4. A simple tracking method
+Note this is educational, not personalized financial advice.''',
+      'category': 'Finance & Analytics',
+      'subcategory': 'Personal Finance',
+      'tags': 'budget, personal finance, planning',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'income::Monthly net || fixed::Rent, bills, debt || goals::Savings targets',
+    },
+    {
+      'title': 'Spreadsheet Formula Architect',
+      'description': 'Design formulas for a spreadsheet model',
+      'body': '''Help me build spreadsheet formulas.
+
+Goal: {{goal}}
+Data layout: {{layout}}
+Tool: {{tool}}
+
+Provide:
+1. The exact formula(s), with cell references explained
+2. An array/dynamic version if it is cleaner
+3. Error handling (IFERROR, edge cases)
+4. How to make it robust as rows grow''',
+      'category': 'Finance & Analytics',
+      'subcategory': 'Spreadsheet Models',
+      'tags': 'excel, sheets, formulas, modeling',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'goal::What to compute || layout::Columns/sheets || tool::Excel or Google Sheets',
+      'rating': 4,
+    },
+    {
+      'title': 'Sports Model Feature Ideas',
+      'description': 'Brainstorm features for a sports analytics model',
+      'body': '''Act as a sports analytics researcher. For the question below, propose modeling features and an approach.
+
+Question: {{question}}
+Available data: {{data}}
+
+Provide:
+1. Candidate features and why each has predictive value
+2. Data leakage traps to avoid
+3. A baseline model and an evaluation metric
+4. How to validate honestly (out-of-sample, time-based split)
+This is for research/analysis, not gambling advice.''',
+      'category': 'Finance & Analytics',
+      'subcategory': 'Sports Analytics',
+      'tags': 'sports analytics, features, modeling, statistics',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'question::What to predict || data::What you have',
+    },
+    {
+      'title': 'Probability Sanity Check',
+      'description': 'Reason through a probability problem carefully',
+      'body': '''Work through this probability/statistics problem rigorously.
+
+Problem: {{problem}}
+
+Steps:
+1. Define the sample space and assumptions
+2. Choose the right approach (conditional, Bayes, distribution) and justify it
+3. Show the calculation step by step
+4. Give the numeric answer with units/interpretation
+5. Note common intuition traps for this type of problem''',
+      'category': 'Finance & Analytics',
+      'subcategory': 'Probability',
+      'tags': 'probability, statistics, bayes, reasoning',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'problem::The problem statement',
+    },
+    {
+      'title': 'Chart / Dashboard Designer',
+      'description': 'Choose the right visualization for data',
+      'body': '''Help me visualize this data effectively.
+
+Data: {{data}}
+Audience & message: {{message}}
+
+Provide:
+1. The best chart type(s) for the message and why
+2. What to put on each axis / encoding (color, size)
+3. What to avoid (dual axes, pie overload, chartjunk)
+4. A layout for a small dashboard if multiple views are needed''',
+      'category': 'Finance & Analytics',
+      'subcategory': 'Data Visualization',
+      'tags': 'dataviz, charts, dashboard, design',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'data::What you are plotting || message::The point and audience',
+    },
+
+    // =====================================================
+    // RESEARCH & KNOWLEDGE
+    // =====================================================
+    {
+      'title': 'Academic Paper Summarizer',
+      'description': 'Distill a paper into an actionable summary',
+      'body': '''Summarize the paper/text below for a technical reader.
+
+Paper text or abstract:
+"""
+{{paper}}
+"""
+
+Produce:
+1. The core contribution in two sentences
+2. Method in plain language
+3. Key results and their limitations
+4. How I could apply or build on this
+5. Open questions the paper leaves''',
+      'category': 'Research & Knowledge',
+      'subcategory': 'Academic Papers',
+      'tags': 'research, summary, papers, distillation',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'paper::Abstract or full text',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Literature Review Organizer',
+      'description': 'Structure sources into a coherent review',
+      'body': '''Help me organize a literature review on: {{topic}}.
+
+Sources / notes: {{sources}}
+
+Provide:
+1. A thematic grouping of the sources
+2. Points of agreement and disagreement between them
+3. Gaps in the current literature
+4. An outline for the review with each theme
+5. A consistent citation format to use''',
+      'category': 'Research & Knowledge',
+      'subcategory': 'Citations',
+      'tags': 'literature review, synthesis, citations',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Advanced',
+      'variables': 'topic::Review subject || sources::List of papers/notes',
+    },
+    {
+      'title': 'Technical Doc Writer',
+      'description': 'Draft clear technical documentation',
+      'body': '''Write technical documentation for the following.
+
+Subject: {{subject}}
+Audience: {{audience}}
+
+Include:
+1. A concise overview and when to use it
+2. Prerequisites
+3. Step-by-step usage with examples
+4. Configuration/reference table
+5. Troubleshooting and FAQ
+Keep it scannable with headings and code blocks.''',
+      'category': 'Research & Knowledge',
+      'subcategory': 'Technical Documentation',
+      'tags': 'documentation, technical writing, reference',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'subject::What to document || audience::Who reads it',
+      'rating': 4,
+    },
+    {
+      'title': 'Personal Wiki Structurer',
+      'description': 'Design a note structure for a knowledge base',
+      'body': '''Help me structure a personal wiki / knowledge base for: {{scope}}.
+
+Provide:
+1. A top-level organization scheme (PARA, Zettelkasten, or topic tree) with a recommendation
+2. Note templates for the main content types
+3. A tagging and linking convention
+4. How to keep it maintainable and searchable over time
+5. A starter folder/tag list''',
+      'category': 'Research & Knowledge',
+      'subcategory': 'Personal Wiki',
+      'tags': 'wiki, knowledge base, zettelkasten, para',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'scope::What the wiki covers',
+    },
+    {
+      'title': 'OCR Cleanup & Structuring',
+      'description': 'Fix and structure raw OCR text',
+      'body': '''Clean up this raw OCR output and structure it.
+
+OCR text:
+"""
+{{ocr}}
+"""
+
+Tasks:
+1. Fix obvious OCR errors and broken line wraps
+2. Restore headings, lists, and tables
+3. Flag anything uncertain rather than guessing facts
+4. Output clean markdown''',
+      'category': 'Research & Knowledge',
+      'subcategory': 'OCR',
+      'tags': 'ocr, cleanup, markdown, structuring',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'ocr::Raw OCR text',
+    },
+
+    // =====================================================
+    // KNOWLEDGE MANAGEMENT
+    // =====================================================
+    {
+      'title': 'SOP Generator',
+      'description': 'Turn a process into a repeatable SOP',
+      'body': '''Create a Standard Operating Procedure for this process.
+
+Process: {{process}}
+Owner / audience: {{audience}}
+
+Include:
+1. Purpose and scope
+2. Roles and prerequisites
+3. Numbered steps with decision points
+4. Quality checks and definition of done
+5. A troubleshooting section and revision date''',
+      'category': 'Knowledge Management',
+      'subcategory': 'SOPs',
+      'tags': 'sop, process, documentation, checklist',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'process::What the SOP covers || audience::Who performs it',
+      'rating': 4,
+    },
+    {
+      'title': 'Decision Tree Builder',
+      'description': 'Turn a decision into a clear branching guide',
+      'body': '''Turn this decision into a clear decision tree.
+
+Decision: {{decision}}
+Factors: {{factors}}
+
+Provide:
+1. The ordered questions that best split the outcomes
+2. A text/indented tree with the recommended action at each leaf
+3. Edge cases and defaults
+4. A note on when to escalate to a human''',
+      'category': 'Knowledge Management',
+      'subcategory': 'Decision Trees',
+      'tags': 'decision tree, framework, process',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'decision::The decision to model || factors::Inputs that matter',
+    },
+    {
+      'title': 'Cheat Sheet Compiler',
+      'description': 'Condense a topic into a one-page reference',
+      'body': '''Create a one-page cheat sheet for: {{topic}}.
+
+Constraints: {{constraints}}
+
+Include:
+1. The most-used commands/concepts grouped logically
+2. Syntax with a tiny example each
+3. Gotchas and defaults
+4. Keep it dense but scannable with clear sections''',
+      'category': 'Knowledge Management',
+      'subcategory': 'Cheat Sheets',
+      'tags': 'cheat sheet, reference, quick reference',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'topic::Subject || constraints::Focus or level',
+      'rating': 4,
+    },
+    {
+      'title': 'Runbook / Playbook Author',
+      'description': 'Write an operational playbook for a scenario',
+      'body': '''Write an operational playbook for: {{scenario}}.
+
+Provide:
+1. Trigger conditions and severity
+2. First-responder checklist (first 15 minutes)
+3. Step-by-step resolution with commands
+4. Escalation path and communication template
+5. Post-event review checklist''',
+      'category': 'Knowledge Management',
+      'subcategory': 'Playbooks',
+      'tags': 'playbook, runbook, operations, incident',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'scenario::The situation the playbook handles',
+    },
+    {
+      'title': 'Snippet Library Organizer',
+      'description': 'Standardize and tag reusable snippets',
+      'body': '''Help me organize a reusable snippet/command library.
+
+Snippets or topics: {{snippets}}
+
+Provide:
+1. A naming and tagging convention
+2. A standard template (description, code, usage, caveats)
+3. Grouping by language/tool
+4. How to keep it searchable and avoid duplicates''',
+      'category': 'Knowledge Management',
+      'subcategory': 'Snippets',
+      'tags': 'snippets, organization, templates, reference',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'snippets::What you want to store',
+    },
+
+    // =====================================================
+    // BUSINESS
+    // =====================================================
+    {
+      'title': 'Brand Voice Definition',
+      'description': 'Define a consistent brand voice and tone',
+      'body': '''Help me define a brand voice for: {{brand}}.
+
+Audience: {{audience}}
+Personality: {{personality}}
+
+Deliver:
+1. Three to five voice attributes with do/dont examples
+2. Tone shifts by context (support vs marketing)
+3. Vocabulary to use and avoid
+4. Two before/after rewrites showing the voice applied''',
+      'category': 'Business',
+      'subcategory': 'Branding',
+      'tags': 'branding, voice, tone, marketing',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'brand::What it is || audience::Who it serves || personality::Desired feel',
+      'rating': 4,
+    },
+    {
+      'title': 'Marketing Campaign Outline',
+      'description': 'Plan a multi-channel campaign',
+      'body': '''Outline a marketing campaign.
+
+Product/offer: {{offer}}
+Audience: {{audience}}
+Budget/constraints: {{constraints}}
+
+Provide:
+1. Core message and positioning
+2. Channel mix with rationale
+3. A content calendar outline
+4. Success metrics and how to measure
+5. A lean test to validate before scaling''',
+      'category': 'Business',
+      'subcategory': 'Marketing',
+      'tags': 'marketing, campaign, strategy, content',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'offer::What you promote || audience::Target || constraints::Budget/time',
+    },
+    {
+      'title': 'Cold Outreach Rewriter',
+      'description': 'Rewrite outreach to be concise and relevant',
+      'body': '''Rewrite this outreach message to be respectful, concise, and relevant.
+
+Draft:
+"""
+{{draft}}
+"""
+Recipient context: {{context}}
+
+Provide:
+1. A tightened version (under 120 words) leading with their value
+2. A clear, low-friction call to action
+3. A subject line
+4. One shorter follow-up
+Avoid spammy or manipulative tactics.''',
+      'category': 'Business',
+      'subcategory': 'Sales',
+      'tags': 'sales, outreach, email, copywriting',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'draft::Your message || context::Who they are',
+    },
+    {
+      'title': 'Meeting Notes to Action Items',
+      'description': 'Convert messy notes into decisions and tasks',
+      'body': '''Turn these meeting notes into a clean summary.
+
+Notes:
+"""
+{{notes}}
+"""
+
+Output:
+1. Decisions made
+2. Action items with owner and due date (mark TBD if unknown)
+3. Open questions
+4. A two-sentence summary for people who missed it''',
+      'category': 'Business',
+      'subcategory': 'Productivity',
+      'tags': 'meetings, notes, action items, productivity',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'notes::Raw meeting notes',
+      'rating': 4,
+    },
+    {
+      'title': 'Support Reply Drafter',
+      'description': 'Draft an empathetic, accurate support reply',
+      'body': '''Draft a customer support reply.
+
+Customer message:
+"""
+{{message}}
+"""
+Facts / policy: {{facts}}
+
+Provide:
+1. An empathetic, clear reply that resolves or sets next steps
+2. Only claims supported by the facts given (no guessing)
+3. A short version and a detailed version
+4. Suggested internal tags/priority''',
+      'category': 'Business',
+      'subcategory': 'Customer Support',
+      'tags': 'support, customer service, email, tone',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'message::Customer text || facts::What is true/allowed',
+    },
+
+    // =====================================================
+    // CREATIVE
+    // =====================================================
+    {
+      'title': 'Logo Concept Brief',
+      'description': 'Generate logo directions from a brief',
+      'body': '''Act as a brand designer. Propose logo directions for: {{brand}}.
+
+Values/feel: {{values}}
+Constraints: {{constraints}}
+
+Provide:
+1. Three distinct concept directions (idea, symbolism, style)
+2. Type vs mark vs combination recommendation
+3. Color and typography suggestions per direction
+4. What to test and how to shortlist
+This is a creative brief, not final artwork.''',
+      'category': 'Creative',
+      'subcategory': 'Logo Design',
+      'tags': 'logo, branding, design brief, concepts',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'brand::Name and what it does || values::Personality || constraints::Uses, dont-wants',
+    },
+    {
+      'title': 'UX Flow Critique',
+      'description': 'Review a user flow for friction',
+      'body': '''Critique this user flow for usability.
+
+Flow: {{flow}}
+User goal: {{goal}}
+
+Provide:
+1. Friction points and where users likely drop off
+2. Cognitive load and clarity issues
+3. Concrete improvements ranked by impact/effort
+4. Accessibility considerations
+5. What to A/B test first''',
+      'category': 'Creative',
+      'subcategory': 'UI/UX',
+      'tags': 'ux, usability, flow, design critique',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'flow::The steps || goal::What the user wants',
+      'rating': 4,
+    },
+    {
+      'title': 'Story Premise Developer',
+      'description': 'Develop a premise into a story skeleton',
+      'body': '''Help me develop this story premise.
+
+Premise: {{premise}}
+Tone/genre: {{tone}}
+
+Provide:
+1. A sharpened logline
+2. The central conflict and stakes
+3. Main character want vs need
+4. A beat outline (setup, turns, climax, resolution)
+5. Three ways to make it less predictable''',
+      'category': 'Creative',
+      'subcategory': 'Storytelling',
+      'tags': 'writing, story, plot, structure',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Intermediate',
+      'variables': 'premise::Your idea || tone::Genre and mood',
+    },
+    {
+      'title': 'Writing Editor & Line Polish',
+      'description': 'Tighten prose while keeping the voice',
+      'body': '''Edit the passage below. Keep my voice; improve clarity and flow.
+
+Passage:
+"""
+{{passage}}
+"""
+
+Provide:
+1. A cleaner version
+2. A short list of the main changes and why
+3. Any unclear sentences flagged as questions
+4. Do not add facts I did not write''',
+      'category': 'Creative',
+      'subcategory': 'Writing',
+      'tags': 'editing, writing, prose, clarity',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'passage::Text to edit',
+      'rating': 4,
+    },
+    {
+      'title': 'Music Practice Plan',
+      'description': 'Build a focused practice routine',
+      'body': '''Create a practice plan.
+
+Instrument/skill: {{skill}}
+Level & time: {{level}}
+Goal: {{goal}}
+
+Provide:
+1. A weekly routine broken into warmups, technique, repertoire, and review
+2. Specific exercises for the goal
+3. How to measure progress
+4. How to stay consistent and avoid burnout''',
+      'category': 'Creative',
+      'subcategory': 'Music',
+      'tags': 'music, practice, routine, learning',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'skill::Instrument/area || level::Experience + time || goal::What to achieve',
+    },
+
+    // =====================================================
+    // PERSONAL ARCHIVE
+    // =====================================================
+    {
+      'title': 'Weekly Review Template',
+      'description': 'Run a structured personal weekly review',
+      'body': '''Guide me through a weekly review.
+
+Context: {{context}}
+
+Ask me, one section at a time:
+1. Wins and what worked
+2. What slipped and why
+3. Open loops to capture
+4. Priorities for next week (max 3)
+5. One improvement to try
+Then summarize into a clean note I can save.''',
+      'category': 'Personal Archive',
+      'subcategory': 'Journal',
+      'tags': 'weekly review, reflection, productivity, journal',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'context::Whats going on this week',
+      'rating': 4,
+    },
+    {
+      'title': 'Learning Roadmap Builder',
+      'description': 'Turn a learning goal into a staged plan',
+      'body': '''Build a learning roadmap for: {{goal}}.
+
+Current level: {{level}}
+Time available: {{time}}
+
+Provide:
+1. Milestones from beginner to competent
+2. For each milestone: what to learn, a resource type, and a small project to prove it
+3. How to test understanding at each stage
+4. Common dead-ends to avoid''',
+      'category': 'Personal Archive',
+      'subcategory': 'Learning',
+      'tags': 'learning, roadmap, skill, plan',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'goal::What to learn || level::Starting point || time::Hours per week',
+      'rating': 4,
+    },
+    {
+      'title': 'Idea Capture Expander',
+      'description': 'Develop a raw idea into a next step',
+      'body': '''Help me develop this raw idea.
+
+Idea: {{idea}}
+
+Provide:
+1. A one-line restatement of the core idea
+2. Why it might matter and who it helps
+3. The riskiest assumption to test
+4. The smallest next action to move it forward
+5. Related ideas or prior art to check''',
+      'category': 'Personal Archive',
+      'subcategory': 'Ideas',
+      'tags': 'ideas, brainstorming, next action',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'idea::The raw idea',
+    },
+    {
+      'title': 'Life Hack Evaluator',
+      'description': 'Sanity-check a life hack before adopting it',
+      'body': '''Evaluate this life hack / tip before I adopt it.
+
+Hack: {{hack}}
+
+Provide:
+1. Whether it actually holds up (evidence or plausibility)
+2. Hidden downsides or risks
+3. Who it works for and who it does not
+4. A simple way to trial it for a week
+5. A better alternative if it is weak''',
+      'category': 'Personal Archive',
+      'subcategory': 'Life Hacks',
+      'tags': 'life hacks, evaluation, habits',
+      'ai_models': 'Claude, ChatGPT',
+      'difficulty': 'Beginner',
+      'variables': 'hack::The tip to evaluate',
+    },
+
+    // =====================================================
+    // IMAGE GENERATION (SFW)
+    // =====================================================
+    {
+      'title': 'Photorealistic Portrait Prompt',
+      'description': 'Build a detailed photorealistic portrait prompt',
+      'body': '''Create a detailed image-generation prompt for a photorealistic portrait.
+
+Subject: {{subject}}
+Mood: {{mood}}
+
+Compose the prompt with:
+1. Subject and expression
+2. Lighting (e.g. soft window light, golden hour, Rembrandt)
+3. Lens and camera feel (e.g. 85mm f/1.8, shallow depth of field)
+4. Composition and background
+5. Color palette and overall mood
+Output a single ready-to-use prompt plus a short suggested negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Portraits',
+      'tags': 'portrait, photorealism, lighting, prompt',
+      'ai_models': 'Midjourney, SDXL, Flux, DALL-E',
+      'difficulty': 'Intermediate',
+      'variables': 'subject::Who/what || mood::Feeling to convey',
+      'rating': 5,
+      'is_favorite': 1,
+    },
+    {
+      'title': 'Cinematic Scene Prompt',
+      'description': 'Compose a film-still style image prompt',
+      'body': '''Write an image prompt for a cinematic film still.
+
+Scene: {{scene}}
+Genre/reference: {{genre}}
+
+Include:
+1. Subject and action in the frame
+2. Cinematic lighting and atmosphere
+3. Lens, aspect ratio, and film grain feel
+4. Color grade (e.g. teal-orange, muted)
+5. Composition (rule of thirds, leading lines)
+Return one polished prompt and a matching negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Cinematic',
+      'tags': 'cinematic, film still, lighting, color grade',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'scene::What happens || genre::Look to emulate',
+      'rating': 4,
+    },
+    {
+      'title': 'Product Photography Prompt',
+      'description': 'Studio-quality product shot prompt',
+      'body': '''Create an image prompt for a clean product shot.
+
+Product: {{product}}
+Vibe: {{vibe}}
+
+Specify:
+1. Surface/background and props (minimal)
+2. Studio lighting setup (softbox, rim light, reflections)
+3. Angle and framing
+4. Material/texture emphasis
+5. Color palette
+Output one prompt suitable for e-commerce plus a negative prompt.''',
+      'category': 'Image Generation',
+      'subcategory': 'Product Photography',
+      'tags': 'product, studio, ecommerce, lighting',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'product::The item || vibe::Premium, playful, etc',
+    },
+    {
+      'title': 'Negative Prompt Toolkit',
+      'description': 'Build a reusable negative prompt',
+      'body': '''Help me craft a strong negative prompt for {{model}}.
+
+Subject type: {{subject}}
+Recurring problems: {{problems}}
+
+Provide:
+1. A general-purpose negative prompt for this subject type
+2. Additions targeting the specific artifacts I listed
+3. A short explanation of why each term helps
+4. A note on not over-stacking negatives''',
+      'category': 'Image Generation',
+      'subcategory': 'Negative Prompts',
+      'tags': 'negative prompt, quality, artifacts',
+      'ai_models': 'SDXL, Flux, Midjourney',
+      'difficulty': 'Intermediate',
+      'variables': 'model::Target model || subject::What you generate || problems::Artifacts to fix',
+    },
+    {
+      'title': 'Prompt Optimizer (Image)',
+      'description': 'Refine a rough image prompt into a strong one',
+      'body': '''Improve my rough image prompt for {{model}}.
+
+Rough prompt:
+"""
+{{prompt}}
+"""
+
+Provide:
+1. A rewritten prompt with clear subject, style, lighting, and composition
+2. Suggested parameters (aspect ratio, stylize, steps/CFG as relevant)
+3. A negative prompt
+4. Two variations for different looks''',
+      'category': 'Image Generation',
+      'subcategory': 'Prompt Optimization',
+      'tags': 'prompt optimization, image, refine',
+      'ai_models': 'Midjourney, SDXL, Flux',
+      'difficulty': 'Intermediate',
+      'variables': 'model::Target model || prompt::Your draft',
+      'rating': 4,
+    },
+
+    // =====================================================
+    // VIDEO GENERATION (SFW)
+    // =====================================================
+    {
+      'title': 'Cinematic Video Shot Prompt',
+      'description': 'Describe a single cinematic video shot',
+      'body': '''Write a text-to-video prompt for one cinematic shot.
+
+Scene: {{scene}}
+Duration/feel: {{feel}}
+
+Include:
+1. Subject and action
+2. Camera movement (e.g. slow dolly-in, orbit, handheld)
+3. Lens and framing
+4. Lighting and time of day
+5. Mood and color
+Keep it a single coherent shot; return one ready prompt.''',
+      'category': 'Video Generation',
+      'subcategory': 'Cinematic Video',
+      'tags': 'text-to-video, cinematic, camera motion',
+      'ai_models': 'Runway, Kling, Veo, Sora',
+      'difficulty': 'Intermediate',
+      'variables': 'scene::What happens || feel::Length and mood',
+      'rating': 4,
+    },
+    {
+      'title': 'Camera Motion Designer',
+      'description': 'Choose camera moves for a video prompt',
+      'body': '''Suggest camera movement for this shot and write the prompt language for it.
+
+Shot intent: {{intent}}
+
+Provide:
+1. The best camera move(s) to serve the intent and why
+2. The exact phrasing to describe the move in a video prompt
+3. How to keep motion smooth and avoid warping
+4. A fallback if the model struggles with the move''',
+      'category': 'Video Generation',
+      'subcategory': 'Camera Motion',
+      'tags': 'camera motion, video, cinematography',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Intermediate',
+      'variables': 'intent::What the shot should convey',
+    },
+    {
+      'title': 'Character Consistency Across Shots',
+      'description': 'Keep a character consistent in generated video',
+      'body': '''Help me keep a character consistent across multiple generated shots.
+
+Character description: {{character}}
+Tooling: {{tooling}}
+
+Provide:
+1. A locked character description block to reuse verbatim
+2. Which anchor details to always repeat (face, wardrobe, palette)
+3. How to use reference images / seeds if supported
+4. Shot-by-shot prompt scaffolding that keeps continuity''',
+      'category': 'Video Generation',
+      'subcategory': 'Character Consistency',
+      'tags': 'consistency, character, video, continuity',
+      'ai_models': 'Runway, Kling, Veo',
+      'difficulty': 'Advanced',
+      'variables': 'character::Who they are || tooling::Model/features available',
+    },
+    {
+      'title': 'Storyboard to Prompts',
+      'description': 'Convert a storyboard into shot prompts',
+      'body': '''Turn this storyboard/outline into a sequence of video prompts.
+
+Storyboard: {{storyboard}}
+Style: {{style}}
+
+For each shot provide:
+1. A self-contained prompt (subject, action, camera, lighting)
+2. Continuity notes linking it to adjacent shots
+3. Suggested duration
+Keep a consistent style across all shots.''',
+      'category': 'Video Generation',
+      'subcategory': 'Storyboards',
+      'tags': 'storyboard, sequence, video, prompts',
+      'ai_models': 'Runway, Kling, Veo, Sora',
+      'difficulty': 'Advanced',
+      'variables': 'storyboard::Beats/scenes || style::Consistent look',
+    },
   ];
 }
